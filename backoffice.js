@@ -11,16 +11,16 @@ const myURL = "https://striveschool-api.herokuapp.com/api/product";
 // PARTE FINALE DELLA LEZIONE
 // ora il form deve servire anche in modalità "MODIFICA" evento
 // come faccio a capire se la pagina backoffice si è caricata in modalità CREA o in modalità MODIFICA?
-// se ho il parametro "concertId" nella barra degli indirizzi, sono in modalità MODIFICA!
-// se NON ho il parametro "concertId" nella barra degli indirizzi, sono in modalità CREAZIONE!
+// se ho il parametro "productId" nella barra degli indirizzi, sono in modalità MODIFICA!
+// se NON ho il parametro "productId" nella barra degli indirizzi, sono in modalità CREAZIONE!
 
 // const addressBarContent = new URLSearchParams(location.search);
 // console.log(addressBarContent);
-// // estrapolo dai parametri dell'indirizzo quello che in index.js ho chiamato "concertId"
-// const concertId = addressBarContent.get("concertId");
-// console.log(concertId);
+// // estrapolo dai parametri dell'indirizzo quello che in index.js ho chiamato "productId"
+// const productId = addressBarContent.get("productId");
+// console.log(productId);
 
-// if (concertId) {
+// if (productId) {
 // cambiamo il titolo del form
 document.getElementById("form-title").innerText = "Form di modifica evento";
 // recupero le informazioni da riempire nel form con una fetch() CHIRURGICA
@@ -39,14 +39,14 @@ document.getElementById("form-title").innerText = "Form di modifica evento";
 //       );
 //     }
 //   })
-//   .then((singleConcert) => {
-//     // ho ottenuto i dettagli di un singolo concerto!
+//   .then((singleproduct) => {
+//     // ho ottenuto i dettagli di un singolo producto!
 //     // ripopolo il form
-//     nameInput.value = singleConcert.name;
-//     descriptionInput.value = singleConcert.description;
-//     brandInput.value = singleConcert.brand;
-//     priceInput.value = singleConcert.price;
-//     imgInput.value = singleConcert.imageUrl;
+//     nameInput.value = singleproduct.name;
+//     descriptionInput.value = singleproduct.description;
+//     brandInput.value = singleproduct.brand;
+//     priceInput.value = singleproduct.price;
+//     imgInput.value = singleproduct.imageUrl;
 //   })
 //   .catch((err) => {
 //     console.log(err);
@@ -63,7 +63,7 @@ form.addEventListener("submit", function (e) {
   // è stata pensata dal backender che ha creato l'API
   // in genere, vi verrà fornita
 
-  const newConcert = {
+  const newproduct = {
     name: nameInput.value,
     description: descriptionInput.value,
     price: priceInput.value,
@@ -71,14 +71,14 @@ form.addEventListener("submit", function (e) {
     image: imgInput.value,
   };
 
-  console.log("ecco i dati raccolti dal form che sto per inviare:", newConcert);
+  console.log("ecco i dati raccolti dal form che sto per inviare:", newproduct);
 
   //   let URLToUse;
   //   let methodToUse;
 
-  //   if (concertId) {
+  //   if (productId) {
   //     methodToUse = "PUT";
-  //     URLToUse = myURL + "/" + concertId;
+  //     URLToUse = myURL + "/" + productId;
   //   } else {
   //     methodToUse = "POST";
   //     URLToUse = myURL;
@@ -86,8 +86,8 @@ form.addEventListener("submit", function (e) {
 
   fetch(myURL, {
     method: "POST", // alcune volte sarà PUT
-    // method: concertId ? 'PUT' : 'POST', // alcune volte sarà PUT, metodo extreme delle 13:11 con operatore ternario
-    body: JSON.stringify(newConcert), // il body in una fetch può essere SOLAMENTE una stringa
+    // method: productId ? 'PUT' : 'POST', // alcune volte sarà PUT, metodo extreme delle 13:11 con operatore ternario
+    body: JSON.stringify(newproduct), // il body in una fetch può essere SOLAMENTE una stringa
     headers: {
       Authorization:
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWFhM2YwMTE4N2U1YzAwMTgxNGM2MTciLCJpYXQiOjE3MDU2NTYwNjUsImV4cCI6MTcwNjg2NTY2NX0.vN6AZHr-d-ozVs7uUsptXyqVVrLq1ZGLOi-CWskCnNI",
@@ -97,8 +97,8 @@ form.addEventListener("submit", function (e) {
     .then((response) => {
       console.log(response);
       if (response.ok) {
-        // il concerto è stato creato correttamente!
-        alert("CONCERTO SALVATO!");
+        // il producto è stato creato correttamente!
+        alert("productO SALVATO!");
         // svuoto il form
         nameInput.value = "";
         descriptionInput.value = "";
@@ -110,12 +110,12 @@ form.addEventListener("submit", function (e) {
         // hai sbagliato qualcosa nella richiesta?
       }
     })
-    .then((singleConcert) => {
-      nameInput.value = singleConcert.name;
-      descriptionInput.value = singleConcert.description;
-      brandInput.value = singleConcert.brand;
-      priceInput.value = singleConcert.price;
-      imgInput.value = singleConcert.imageUrl;
+    .then((singleproduct) => {
+      nameInput.value = singleproduct.name;
+      descriptionInput.value = singleproduct.description;
+      brandInput.value = singleproduct.brand;
+      priceInput.value = singleproduct.price;
+      imgInput.value = singleproduct.imageUrl;
     })
     .catch((err) => {
       console.log(err);

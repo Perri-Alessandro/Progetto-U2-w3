@@ -1,4 +1,33 @@
-const getBook = function () {
+const generateCards = function (array) {
+  // manipolazione del DOM
+  array.forEach((product) => {
+    const newCol = document.createElement("div");
+    newCol.classList.add("col", "col-12", "col-md-4", "col-lg-3");
+    newCol.innerHTML = `
+          <div class="card h-100">
+              <img src="${product.imageUrl}" class="card-img-top" alt="...">
+              <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">${product.name}</h5>
+                  <p class="card-text flex-grow-1">${product.description}</p>
+                  <p class="card-text">${product.brand}</p>
+                  <a href="#" class="btn btn-primary"><i class="bi bi-cart-check me-2"></i>${
+                    product.price || "?"
+                  }€</a>
+                  <a href="./details.html?productId=${
+                    product._id
+                  }" class="btn btn-success mt-2"><i class="bi bi-caret-right"></i></i>
+                   VAI AI DETTAGLI 
+                  </a>
+              </div>
+          </div>
+          `;
+    // ci manca solo da appendere questa col alla row degli eventi
+    const eventsRow = document.getElementById("events-row");
+    eventsRow.appendChild(newCol);
+  });
+};
+
+const getProduct = function () {
   fetch("https://striveschool-api.herokuapp.com/api/product", {
     headers: {
       Authorization:
@@ -6,12 +35,17 @@ const getBook = function () {
     },
   })
     .then((risposta) => {
-      console.log("RISPOSTA DEL SERVER", risposta);
       if (risposta.ok) {
-        console.log("FETCH ESEGUITA CORRETTAMENTE");
+        console.log("FETCH ESEGUITA CORRETTAMENTE", risposta);
         return risposta.json();
+      } else if (response.status === 400) {
+        throw new Error("ERRORE 400");
+      } else if (response.status === 401) {
+        throw new Error("ERRORE 401");
+      } else if (response.status === 500) {
+        throw new Error("ERRORE 500");
       } else {
-        throw new Error("Errore generico");
+        throw new Error("ERRORE");
       }
     })
     .then((homeArray) => {
@@ -19,74 +53,9 @@ const getBook = function () {
         "HOME ARRAY, RISULTATO/RISPOSTA RICEVUTA CORRETTAMENTE",
         homeArray
       );
-    });
-  const divBook = document.getElementById("divBook");
-  const rowCard = document.createElement("div");
-  rowCard.classList.add("row", "justify-content-center", "g-3");
-  homeArray
-    .forEach((concert, i) => {
-      const contenutoCard = document.createElement("div");
-      contenutoCard.classList.add("col-4");
-      contenutoCard.innerHTML = `
-                  <div class="card h-100">
-              <img src="${concert.imageUrl}" class="card-img-top" alt="...">
-              <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">${concert.name}</h5>
-                  <p class="card-text flex-grow-1">${concert.description}</p>
-                  <p class="card-text">${concert.brand}</p>
-                  <a href="#" class="btn btn-primary"><i class="bi bi-cart-check me-2"></i>${
-                    concert.price || "?"
-                  }€</a>
-                  <a href="./details.html?concertId=${
-                    concert._id
-                  }" class="btn btn-success mt-2"><i class="bi bi-caret-right"></i></i>
-                   VAI AI DETTAGLI 
-                  </a>
-              </div>
-          </div>
-      `;
-      divBook.appendChild(rowCard);
-      rowCard.appendChild(contenutoCard);
-
-      const deleteButton = contenutoCard.querySelector(".btn-primary");
-      deleteButton.addEventListener("click", function () {
-        contenutoCard.closest(".col-4").remove();
-        alert("OPZIONE SCARTATA DALLA LISTA");
-      });
-
-      const addToCartButton = contenutoCard.querySelector(".btn-danger");
-      addToCartButton.addEventListener("click", function (e) {
-        e.preventDefault();
-        const card = this.closest(".col-4");
-        const carrello = document.getElementById("carrello");
-        const titolo = document.getElementsByClassName("card-title")[i];
-        carrello.appendChild(titolo);
-        titolo.classList.add("mb-4");
-        card.classList.add("d-none");
-        alert("IMMOBILE AGGIUNTO A CARRELLO");
-
-        const bottTogliCarrello = document.createElement("button");
-        bottTogliCarrello.textContent = "RIMUOVI";
-        bottTogliCarrello.classList.add(
-          "fs-5",
-          "col-12",
-          "py-1",
-          "px-3",
-          "bg-dark",
-          "text-white",
-          "mt-2"
-        );
-        titolo.appendChild(bottTogliCarrello);
-        bottTogliCarrello.addEventListener("click", function () {
-          card.classList.remove("d-none");
-          titolo.remove();
-          alert("IMMOBILE RIMOSSO DAL CARRELLO");
-        });
-      });
     })
     .catch((errore) => {
       console.log("Errore generico", errore);
     });
 };
-
-getBook();
+getProduct();
