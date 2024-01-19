@@ -53,6 +53,7 @@ const getProduct = function () {
         "HOME ARRAY, RISULTATO/RISPOSTA RICEVUTA CORRETTAMENTE",
         homeArray
       );
+      generateCards(homeArray);
     })
     .catch((errore) => {
       console.log("Errore generico", errore);
